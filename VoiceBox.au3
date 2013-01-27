@@ -1,14 +1,20 @@
 #AutoIt3Wrapper_Icon=res\VoiceBox.ico
 #AutoIt3Wrapper_UseUpx=n
 #AutoIt3Wrapper_Res_Description=VoiceBox
-#AutoIt3Wrapper_Res_Fileversion=2.0.0.0
+#AutoIt3Wrapper_Res_Fileversion=2.0.1.0
 #AutoIt3Wrapper_Res_Language=1036
 
 #cs ----------------------------------------------------------------------------
 
-	VoiceBox 2.0
+	VoiceBox 2.01
 	par mGeek (http://mgeek.fr)
 	avec les améliorations de PHP-Voxygen ainsi que PHP-TwinMee de TiBounise (http://tibounise.com)
+
+	changelog:
+	- 2.01
+	Ajout: Vérification de l'existance des librairies CURL / Téléchargement si elles ne sont pas présentes
+	Corrigé: Disparition de la ProgressBar en cas d'erreur de conversion (pour les deux services)
+	Nettoyage de code
 
 #ce ----------------------------------------------------------------------------
 
@@ -20,17 +26,33 @@
 #include <Sound.au3>
 #include "Include.au3"
 
+$version = "2.01"
+$displayVersion = " " & $version
+
 OnAutoItExitRegister("_Exit")
 DirCreate(@ScriptDir & "\temp")
 DirCreate(@ScriptDir & "\files")
+
+If Not FileExists(@ScriptDir & "\curl\curl.exe") _
+		Or Not FileExists(@ScriptDir & "\curl\libcurl.dll") _
+		Or Not FileExists(@ScriptDir & "\curl\libeay32.dll") _
+		Or Not FileExists(@ScriptDir & "\curl\libssl32.dll") Then
+	DirCreate(@ScriptDir & "\curl")
+	ProgressOn("VoiceBox", "Chargement des librairies manquantes", 'Téléchargement de "curl.exe"')
+	InetGet("https://raw.github.com/mGeek/VoiceBox/master/curl/curl.exe", @ScriptDir & "\curl\curl.exe", 1)
+	ProgressSet(30, 'Téléchargement de "libcurl.dll"')
+	InetGet("https://raw.github.com/mGeek/VoiceBox/master/curl/libcurl.dll", @ScriptDir & "\curl\libcurl.dll", 1)
+	ProgressSet(60, 'Téléchargement de "libeay32.dll"')
+	InetGet("https://raw.github.com/mGeek/VoiceBox/master/curl/libeay32.dll", @ScriptDir & "\curl\libeay32.dll", 1)
+	ProgressSet(90, 'Téléchargement de "libssl32.dll"')
+	InetGet("https://raw.github.com/mGeek/VoiceBox/master/curl/libssl32.dll", @ScriptDir & "\curl\libssl32.dll", 1)
+	ProgressOff()
+EndIf
 
 Local $grommoFile = "files/grommo.ini", $voxygenFile = "files/voxygen.ini", $twinmeeFile = "files/twinmee.ini"
 InetGet("https://raw.github.com/mGeek/VoiceBox/master/" & $grommoFile, $grommoFile, 1)
 InetGet("https://raw.github.com/mGeek/VoiceBox/master/" & $voxygenFile, $voxygenFile, 1)
 InetGet("https://raw.github.com/mGeek/VoiceBox/master/" & $twinmeeFile, $twinmeeFile, 1)
-
-$version = "2.0"
-$displayVersion = " 2.0"
 
 Opt("GUIOnEventMode", 1)
 
@@ -200,6 +222,7 @@ Func voiceSynthesis($voice, $text)
 				Return @ScriptDir & "\temp\" & $file
 			Else
 				ConsoleWrite("!> Erreur" & @CRLF)
+				ProgressOff()
 				Return MsgBox(48, "Erreur", "Impossible de récuper une URL pour le fichier audio. Veuillez recommencer.")
 			EndIf
 		Case False
@@ -223,6 +246,7 @@ Func voiceSynthesis($voice, $text)
 				Return @ScriptDir & "\temp\" & $file
 			Else
 				ConsoleWrite("!> Erreur" & @CRLF)
+				ProgressOff()
 				Return MsgBox(48, "Erreur", "Impossible de récuper une URL pour le fichier audio. Veuillez recommencer.")
 			EndIf
 	EndSwitch
