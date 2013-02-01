@@ -1,12 +1,10 @@
 #NoTrayIcon
-#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+
 #AutoIt3Wrapper_Icon=res\VoiceBox.ico
 #AutoIt3Wrapper_UseUpx=n
-#AutoIt3Wrapper_Change2CUI=y
 #AutoIt3Wrapper_Res_Description=VoiceBox
 #AutoIt3Wrapper_Res_Fileversion=2.0.3.0
 #AutoIt3Wrapper_Res_Language=1036
-#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 #cs ----------------------------------------------------------------------------
 
@@ -20,6 +18,9 @@
 	Design à terminer
 	Rendre la connexion avec TwinMee stable
 	Trouver une solution plus adaptée que le _GuiDisable() pour indiquer le chargement
+
+	- 2.03 (1)
+	Supression du CUI laissé par mégarde
 
 	- 2.03
 	Supression des includes inutiles
