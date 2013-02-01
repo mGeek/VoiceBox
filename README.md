@@ -6,10 +6,17 @@ Qu'est-ce que VoiceBox
 
 VoiceBox est une application Windows qui vous permet d'utiliser la syntèse vocale de Voxygen et de TwinMee sans avoir à passer par leur interface.
 
+Problèmes récents
+-------
+Certains utilisateurs ont des problèmes avec certaines voix de TwinMee.
+
+J'y peux rien si leur API est à moitié foutu, hébergé à droite à gauche sur 30 serveurs en parallèle.
+
 Pourquoi utiliser VoiceBox
 -------
 
 Tout simplement car vous avez la possibilité de sauvegarder les textes synthétisés en format MP3 via le bouton sauvegarder.
+
 De plus, les deux syntèses vocales sont regroupées sur un même endroit, avec une interface claire et simple.
 
 - Filtre GROMMO (anti-censure)
